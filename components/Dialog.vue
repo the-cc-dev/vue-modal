@@ -15,7 +15,9 @@
             >
                 <div class="modal-container-table">
                     <div class="modal-container-cell">
-                        <slot></slot>
+                        <div class="modal-container-content">
+                            <slot></slot>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,6 +94,14 @@
     .modal-container-cell {
         display: table-cell;
         vertical-align: middle;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .modal-container-content {
+        position: relative;
+        display: inline-block;
+        text-align: left;
     }
 
     /* none */
