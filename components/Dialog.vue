@@ -60,6 +60,10 @@
             this.$modal.option(this.name, 'onHide', this.onHide);
             
             this.$modal.option(this.name, 'onDismiss', this.onDismiss);
+        },
+
+        beforeDestroy() {
+            this.$modal.unload(this.name);
         }
     }
 </script>

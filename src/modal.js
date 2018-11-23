@@ -179,5 +179,10 @@ module.exports = function () {
         __modal.instances[name][key] = val;
     };
 
+    Modal.prototype.unload = function () {
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+    };
+
     return Modal;
 }
