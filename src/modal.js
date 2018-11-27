@@ -31,40 +31,14 @@ module.exports = function () {
     }
 
     function _hasScrollbar() {
-
-        // The Modern solution
-        if (typeof window.innerWidth === 'number') {
-            return window.innerWidth > document.documentElement.clientWidth;
+        if (window.innerHeight) {
+            return document.body.offsetHeight > window.innerHeight;
         }
-
-        // KEEPING BELOW FOR REFERENCE
-
-        // // rootElem for quirksmode
-        // var rootElem = document.documentElement || document.body;
-
-        // // Check overflow style property on body for fauxscrollbars
-        // var overflowStyle;
-
-        // if (typeof rootElem.currentStyle !== 'undefined') {
-        //     overflowStyle = rootElem.currentStyle.overflow;
-        // }
-
-        // overflowStyle = overflowStyle || window.getComputedStyle(rootElem, '').overflow;
-
-        // // Also need to check the Y axis overflow
-        // var overflowYStyle;
-
-        // if (typeof rootElem.currentStyle !== 'undefined') {
-        //     overflowYStyle = rootElem.currentStyle.overflowY;
-        // }
-
-        // overflowYStyle = overflowYStyle || window.getComputedStyle(rootElem, '').overflowY;
-
-        // var contentOverflows = rootElem.scrollHeight > rootElem.clientHeight;
-        // var overflowShown    = /^(visible|auto)$/.test(overflowStyle) || /^(visible|auto)$/.test(overflowYStyle);
-        // var alwaysShowScroll = overflowStyle === 'scroll' || overflowYStyle === 'scroll';
-
-        // return (contentOverflows && overflowShown) || (alwaysShowScroll);
+        
+        return (
+            (document.documentElement.scrollHeight > document.documentElement.offsetHeight) ||
+            (document.body.scrollHeight > document.body.offsetHeight)
+        );
     }
 
     function Modal(Vue, options) {
@@ -97,12 +71,16 @@ module.exports = function () {
 
         cb = __modal.instances[name].onShow;
 
+        document.body.className += ' modal-show';
+
+        console.log('wtf');
+
         if (_hasScrollbar()) {
-            document.body.style.paddingRight = '18px';
+            console.log('here');
+
+            document.body.className += ' modal-show-scroll';
         }
         
-        document.body.style.overflow = 'hidden';
-
         elFocus = document.getElementById(name + '-focus');
 
         if (elFocus) {
@@ -135,7 +113,8 @@ module.exports = function () {
     };
 
     Modal.prototype.hide = function (name, data) {
-        var i, cb;        
+        var i, cb,
+            timer = null;        
 
         _init(name);
         
@@ -151,10 +130,9 @@ module.exports = function () {
 
         cb = __modal.instances[name].onHide;
 
-        setTimeout(function() {
+        timer = setTimeout(function() {
             if ( ! _visible()) {
-                document.body.style.overflow = '';
-                document.body.style.paddingRight = '';
+                __modal.unload();
             }
         }, 450);
 
@@ -180,8 +158,8 @@ module.exports = function () {
     };
 
     Modal.prototype.unload = function () {
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
+        document.body.className = document.body.className.replace(' modal-show-scroll', '');
+        document.body.className = document.body.className.replace(' modal-show', '');
     };
 
     return Modal;

@@ -69,6 +69,14 @@
 </script>
 
 <style>
+    body.modal-show {
+        overflow: hidden;
+    }
+
+    body.modal-show-scroll {
+        padding-right: 17px;
+    }
+
     .modal-backdrop,
     .modal-container {
         position: fixed;
