@@ -73,11 +73,7 @@ module.exports = function () {
 
         document.body.className += ' modal-show';
 
-        console.log('wtf');
-
         if (_hasScrollbar()) {
-            console.log('here');
-
             document.body.className += ' modal-show-scroll';
         }
         
